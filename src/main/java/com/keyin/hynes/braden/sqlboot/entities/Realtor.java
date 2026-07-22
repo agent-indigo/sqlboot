@@ -3,16 +3,16 @@ import com.keyin.hynes.braden.sqlboot.abstracts.EntityBase;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+@AllArgsConstructor
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Table(name = "realtors")
 @ToString(callSuper = true)
 public final class Realtor extends EntityBase {
@@ -22,11 +22,12 @@ public final class Realtor extends EntityBase {
   private String last_name;
   @Nonnull
   private String photo;
+  @Nonnull
   private String description;
   @Nonnull
   private String email_address;
   @Nonnull
   private String phone_number;
   @Nonnull
-  private Boolean is_mvp;
+  private Boolean is_mvp = false;
 }
