@@ -12,28 +12,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.keyin.hynes.braden.sqlboot.entities.Listing;
+import com.keyin.hynes.braden.sqlboot.interfaces.RestCrud;
 import com.keyin.hynes.braden.sqlboot.interfaces.repositories.ListingRepository;
 @CrossOrigin
 @RequestMapping("/listings")
 @RestController
-public final class ListingRestController {
+public final class ListingRestController implements RestCrud<Listing, UUID> {
   private final ListingRepository listingRepository;
   private Listing target;
   public ListingRestController(@Autowired final ListingRepository listingRepository) {
     this.listingRepository = listingRepository;
   }
   @GetMapping
+  @Override
   public List<Listing> getAll() {
     return listingRepository.findAll();
   }
   @GetMapping("/{id}")
+  @Override
   public Listing getOne(@PathVariable("id") final UUID id) {
     return listingRepository.findById(id).get();
   }
+  @Override
   @PostMapping
-  public Listing add(@RequestBody final Listing listing) {
-    return listingRepository.save(listing);
+  public Listing add(@RequestBody final Listing post) {
+    return listingRepository.save(post);
   }
+  @Override
   @PatchMapping("/{id}")
   public Listing edit(
     @PathVariable("id") final UUID id,
@@ -64,6 +69,7 @@ public final class ListingRestController {
     return listingRepository.save(target);
   }
   @DeleteMapping("/{id}")
+  @Override
   public void delete(@PathVariable("id") final UUID id) {
     listingRepository.deleteById(id);
   }

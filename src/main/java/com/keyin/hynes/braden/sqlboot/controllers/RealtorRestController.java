@@ -12,28 +12,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.keyin.hynes.braden.sqlboot.entities.Realtor;
+import com.keyin.hynes.braden.sqlboot.interfaces.RestCrud;
 import com.keyin.hynes.braden.sqlboot.interfaces.repositories.RealtorRepository;
 @CrossOrigin
 @RequestMapping("/realtors")
 @RestController
-public final class RealtorRestController {
+public final class RealtorRestController implements RestCrud<Realtor, UUID> {
   private final RealtorRepository realtorRepository;
   private Realtor target;
   public RealtorRestController(@Autowired final RealtorRepository realtorRepository) {
     this.realtorRepository = realtorRepository;
   }
   @GetMapping
+  @Override
   public List<Realtor> getAll() {
     return realtorRepository.findAll();
   }
   @GetMapping("/{id}")
+  @Override
   public Realtor getOne(@PathVariable("id") final UUID id) {
     return realtorRepository.findById(id).get();
   }
+  @Override
   @PostMapping
-  public Realtor add(@RequestBody final Realtor realtor) {
-    return realtorRepository.save(realtor);
+  public Realtor add(@RequestBody final Realtor post) {
+    return realtorRepository.save(post);
   }
+  @Override
   @PatchMapping("/{id}")
   public Realtor edit(
     @PathVariable("id") final UUID id,
@@ -50,6 +55,7 @@ public final class RealtorRestController {
     return realtorRepository.save(target);
   }
   @DeleteMapping("/{id}")
+  @Override
   public void delete(@PathVariable("id") final UUID id) {
     realtorRepository.deleteById(id);
   }
